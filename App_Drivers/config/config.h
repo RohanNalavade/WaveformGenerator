@@ -42,5 +42,12 @@
 
 //-----------------------------------//
 
+//----------- DAC Pins --------------//
+#define DAC_GPIO_PIN_CW                     (4)
+#define DAC_GPIO_PORT_CW                    (GPIOA)
+#define DAC_PORT_CW_SIGNAL_GEN              (DAC)
+#define DAC_CHANEL_CW_SIGNAL_GEN            (1)
+
+//-----------------------------------//
 
 #endif //__CONFIG_H__

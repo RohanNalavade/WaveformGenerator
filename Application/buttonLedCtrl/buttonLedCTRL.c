@@ -7,11 +7,11 @@ void buttonLedCTRLProcessInit()
 {
 	clearAllTimingProcessParameters(&appButtonLedCtrl.process);
 }
-
+int dacValue = 0;
 void buttonLedCTRLProcess()
 {
 	updateAllTimingProcessParameters(&appButtonLedCtrl.process);
-
+	
     switch (appButtonLedCtrl.process.currentState)
 	{
 		case STATE_INITIALIZE:
@@ -54,7 +54,7 @@ void buttonLedCTRLProcess()
 				{
 					reset_gpio(GPIOB, LED_PIN); 
 				}
-
+				setValueToDacDevice1(dacValue++);
 				
 			}
 
@@ -62,6 +62,7 @@ void buttonLedCTRLProcess()
 			if(runLowSpeedProcess(&appButtonLedCtrl.process.processTime))
 			{
 				//Do Nothing
+				
 			}
 
 		}break;

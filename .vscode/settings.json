@@ -35,7 +35,8 @@
         "appdma_public.h": "c",
         "uartlogging.h": "c",
         "uartlogging_public.h": "c",
-        "adc.h": "c"
+        "adc.h": "c",
+        "dac.h": "c"
     },
 
     "cortex-debug.gdbPath": "/usr/share/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb",

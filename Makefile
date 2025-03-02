@@ -34,7 +34,8 @@ SRC_DIRS = startup \
 		   LL_Drivers/TIMERS \
 		   LL_Drivers/UART \
 		   LL_Drivers/DMA \
-		   LL_Drivers/ADC
+		   LL_Drivers/ADC \
+		   LL_Drivers/DAC
 
 # CMSIS and HAL Directories (modify these paths as needed)
 CMSIS_INC_DIR = ./Drivers/CMSIS/Include
@@ -57,7 +58,8 @@ INCLUDES = -IApplication/main \
 		   -ILL_Drivers/TIMERS \
 		   -ILL_Drivers/UART \
 		   -ILL_Drivers/DMA \
-		   -ILL_Drivers/ADC
+		   -ILL_Drivers/ADC \
+		   -ILL_Drivers/DAC
 
 # Flags - Assembler Options
 ifneq (,$(or USE_ST_CMSIS, USE_ST_HAL))

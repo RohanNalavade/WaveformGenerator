@@ -13,3 +13,4 @@
 #include "uart_public.h"
 
 #include "adc.h"
+#include "dac.h"

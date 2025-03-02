@@ -35,7 +35,7 @@ void initializationSystem()
     (void)buttonLedCTRLProcessInit();
 
     adcInitDevices();
-    
+    dacInitDevices();
     __enable_irq();  // Enable global interrupts
 
     
