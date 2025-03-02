@@ -11,8 +11,8 @@
 #include "config.h"
 
 typedef enum {
-    ADC_DEVICE_1 = 0,
-    ADC_DEVICE_2,
+    ADC_DEVICE_1 = 0,   // ADC for Waveform Data Aquazition
+    ADC_DEVICE_2,       // ADC for Potentiometer - Not Used
     MAX_ADC_DEVICES
 } adcDeviceIndex_t;
 

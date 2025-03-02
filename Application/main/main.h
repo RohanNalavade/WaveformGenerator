@@ -14,6 +14,9 @@
 
 #include "uart_public.h"
 
+#include "signalGeneratorCTRL_public.h"
+// #include "signalGeneratorCTRL.h"
+
 /* Variable Declarations */
 
 

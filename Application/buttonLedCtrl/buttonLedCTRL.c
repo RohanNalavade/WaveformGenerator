@@ -6,8 +6,11 @@
 void buttonLedCTRLProcessInit()
 {
 	clearAllTimingProcessParameters(&appButtonLedCtrl.process);
+
+	
+	initializeStability(&appButtonLedCtrl.buttonPressed, DEBOUCE_TIME_BUTTON_PRESS_IN_UNITS_100MSEC);
 }
-int dacValue = 0;
+
 void buttonLedCTRLProcess()
 {
 	updateAllTimingProcessParameters(&appButtonLedCtrl.process);
@@ -17,8 +20,7 @@ void buttonLedCTRLProcess()
 		case STATE_INITIALIZE:
 		{
             /* Do Nothing */
-			// uint8_t buffer[1024] = {0xDE, 0xAD};
-			// uart_write((char*)buffer, sizeof(buffer));
+			buttonLedCTRLProcessInit();
 			transitionState(&appButtonLedCtrl.process, STATE_INIT_TO_RUNNING);
 		}break;
 
@@ -34,28 +36,36 @@ void buttonLedCTRLProcess()
 			if(runHiSpeedProcess(&appButtonLedCtrl.process.processTime))
 			{
 				//Do Nothing
-				startAdcConversion();
-				uart_printf("%ld : %d, %d \r\n", appButtonLedCtrl.process.processTime.SystemTick, getADCpinVoltage(0), getADCpinVoltage(1));
+				
 			}
 
 			/* Do Work at 10 Hz*/
 			if(runAverageSpeedProcess(&appButtonLedCtrl.process.processTime))
 			{
-				// Debouncing logic for GPIO input HIGH
-				appButtonLedCtrl.buttonPressed.stableOutputVal = get_gpio_pin_status(GPIOC, BUTTON_PIN);
+				// Debouncing logic for GPIO
+				appButtonLedCtrl.buttonPressed.inputVal = get_gpio_pin_status(GPIOC, BUTTON_PIN);
+				appButtonLedCtrl.buttonPressed.stableOutputVal = checkStability(&appButtonLedCtrl.buttonPressed);
 
 				if(appButtonLedCtrl.buttonPressed.stableOutputVal)
 				{
+					//Button Pressed
 					set_gpio(GPIOB, LED_PIN);
-					
+					appButtonLedCtrl.currentStatus = true;
 
+					if(appButtonLedCtrl.currentStatus != appButtonLedCtrl.previousStatus)
+					{
+						//Positive Edge Triggered for the Button
+						incrementContinusWaveformFrequency();
+					}
 				}
 				else
 				{
-					reset_gpio(GPIOB, LED_PIN); 
+					//Button Released
+					reset_gpio(GPIOB, LED_PIN);
+					appButtonLedCtrl.currentStatus = false;
+					
 				}
-				setValueToDacDevice1(dacValue++);
-				
+				appButtonLedCtrl.previousStatus = appButtonLedCtrl.currentStatus;
 			}
 
 			/* Do Work at 1 Hz*/

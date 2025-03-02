@@ -45,6 +45,7 @@ void dacInitDevices(void)
         if (config->channel == DAC_CHANNEL_1) 
         {
             config->dac->CR |= DAC_CR_EN1;
+            config->dac->CR &= ~DAC_CR_BOFF1;  // Ensure buffer is enabled for DAC channel 1
         }
         else if (config->channel == DAC_CHANNEL_2) 
         {

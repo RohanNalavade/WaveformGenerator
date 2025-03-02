@@ -12,12 +12,15 @@
 
 #include "adc.h"
 #include "dac.h"
+#include "signalGeneratorCTRL_public.h"
 
-#define DEBOUCE_TIME_BUTTON_PRESS_IN_UNITS_100MSEC   (2)    //200 msec
+#define DEBOUCE_TIME_BUTTON_PRESS_IN_UNITS_100MSEC   (1)    //200 msec
 
 typedef struct{
     sProcess process;
     sStability buttonPressed;
+    bool currentStatus;
+    bool previousStatus;
 } sButtonLedCtrl;
 
 //buttonLedCTRL structure instance

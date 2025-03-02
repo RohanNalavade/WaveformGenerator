@@ -111,7 +111,9 @@ void ADC_GPIO_Init(GPIO_TypeDef *GPIOx, uint8_t pin)
     GPIOx->MODER |= (3 << (pin * 2));
 
     // Disable pull-up/pull-down resistors (PUPDR = 00)
-    GPIOx->PUPDR &= ~(3 << (pin * 2));
+    // GPIOx->PUPDR &= ~(3 << (pin * 2));
+    GPIOx->PUPDR |= (1 << (2 * pin)); // Enable pull-up resistor
+
 }
 
 /**

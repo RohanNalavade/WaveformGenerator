@@ -119,3 +119,38 @@ void clearAllTimingProcessParameters(sProcess *pProcess)
     pProcess->currentState = 0;
     pProcess->previousState = 0;
 }
+
+bool checkStability(sStability *pStabilityVariable)
+{
+    bool returnStatus = false;
+    
+    if((pStabilityVariable->inputVal == pStabilityVariable->stableOutputVal))
+    {
+        if(pStabilityVariable->inputVal) return true;
+        else return false;
+    }
+
+    if(pStabilityVariable->stabilityCounter < pStabilityVariable->stabilityThreshold)
+    {
+        if(pStabilityVariable->inputVal) pStabilityVariable->stabilityCounter++;
+        else
+        { 
+            pStabilityVariable->stabilityCounter = 0;
+            returnStatus = false;
+        }
+    }
+    else
+    {
+        pStabilityVariable->stabilityCounter = 0;
+        returnStatus = true;
+    }
+
+    return returnStatus;
+}
+
+void initializeStability(sStability* pStabilityVariable, uint32_t stabilityThreshold)
+{
+   pStabilityVariable->stabilityThreshold = stabilityThreshold;
+   pStabilityVariable->stableOutputVal = false;
+   pStabilityVariable->inputVal = false;
+}

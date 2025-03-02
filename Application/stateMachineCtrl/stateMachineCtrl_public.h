@@ -72,5 +72,6 @@ bool runHiSpeedProcess(sTiming *pProcessTiming);
 bool runAverageSpeedProcess(sTiming *pProcessTiming);
 bool runLowSpeedProcess(sTiming *pProcessTiming);
 void clearAllTimingProcessParameters(sProcess *pProcess);
-
+bool checkStability(sStability *pStabilityVariable);
+void initializeStability(sStability* pStabilityVariable, uint32_t stabilityThreshold);
 #endif //__STATEMACHINECTRL_API_H__

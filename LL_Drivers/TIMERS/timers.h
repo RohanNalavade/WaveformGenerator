@@ -13,13 +13,12 @@
 // Define the timer structure
 typedef struct {
     volatile uint32_t timerIsrTick;
-    sProcess process;
 } sTimer_t;
 
 
 /* Function Prototype */
 void TIM2_IRQHandler(void);
-
+void TIM3_IRQHandler(void);
 #endif // __TIMERS_H__
 
 

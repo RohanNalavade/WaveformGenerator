@@ -23,8 +23,12 @@
 #define PRINTF_BUFFER_SIZE      (512)
 #define UART_BUFFER_SIZE   32
 
-//TIMERS
-#define SYSTICK_TIMER       (TIM2)
+//-------------TIMERS----------------//
+#define SYSTICK_TIMER                   (TIM2)
+#define TIM2_FREQUENCY_HZ               (100)
+
+#define WAVE_GENERATOR_TIMER            (TIM3)
+#define TIM3_FREQUENCY_DEFAULT_HZ       (100)       //Signal Freq = TIM3_FREQUENCY_DEFAULT_HZ/128. //Update rate of LUT Wave.
 
 //-----------ADC Pins----------------//
 
