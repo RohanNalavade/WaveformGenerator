@@ -1,0 +1,129 @@
+include makefile.conf
+
+ifeq ($(FLASHING_TOOL), stm32flash)
+	ifndef FLASHING_SERIAL_PORT
+		$(error Please set the required FLASHING_SERIAL_PORT variable in your makefile)
+	endif
+endif
+
+#Printf redirect over uart
+REDIRECT_PRINTF_ON_UART = 1
+
+# Debugging Options
+#DEBUG = 0
+#OPT = -O0
+
+# Compiler and Tools
+CC = arm-none-eabi-gcc
+LD = arm-none-eabi-ld
+OBJCOPY = arm-none-eabi-objcopy
+
+# Project details
+PROJECT = sight
+
+# Directories
+SRC_DIRS = startup \
+		   Application/main \
+		   App_Drivers/system \
+		   App_Drivers/Clock \
+		   App_Drivers/GPIO \
+		   App_Drivers/Init \
+		   App_Drivers/Timers \
+		   App_Drivers/UART \
+		   App_Drivers/Watchdog \
+		   App_Drivers/config \
+		   Application/buttonLedCtrl \
+		   Application/stateMachineCtrl \
+		   App_Drivers/i2c \
+		   Application/imuCtrl
+
+BIN_DIR = bin
+LINKER_DIR = linker
+
+# CMSIS and HAL Directories (modify these paths as needed)
+CMSIS_INC_DIR = ./Drivers/CMSIS/Include
+CMSIS_DEVICE_DIR = ./Drivers/CMSIS/Device/ST/STM32F2xx/Include
+HAL_INC_DIR = ./Drivers/STM32F2xx_HAL_Driver/Inc
+
+# Source and Object Files
+C_SRCS = $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
+ASM_SRCS = $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.S))
+OBJS = $(patsubst %.c, $(BIN_DIR)/%.o, $(C_SRCS)) \
+       $(patsubst %.S, $(BIN_DIR)/%.o, $(ASM_SRCS))
+
+# Include Directories
+INCLUDES = -I./Drivers/CMSIS/Include \
+           -I./Drivers/CMSIS/Device/ST/STM32F2xx/Include \
+           -I./Drivers/STM32F2xx_HAL_Driver/Inc \
+           -IApplication/main \
+           -IApp_Drivers/system \
+		   -IApp_Drivers/Clock \
+		   -IApp_Drivers/GPIO \
+		   -IApp_Drivers/Init \
+		   -IApp_Drivers/Timers \
+		   -IApp_Drivers/UART \
+		   -IApp_Drivers/Watchdog \
+		   -IApp_Drivers/config \
+		   -IApplication/buttonLedCtrl \
+		   -IApplication/stateMachineCtrl \
+		   -IApp_Drivers/i2c \
+		   -IApplication/imuCtrl
+
+# Flags
+#CPPFLAGS += $(INCLUDES) -Wa,--defsym,CALL_ARM_SYSTEM_INIT=1
+#CPPFLAGS += -I$(CMSIS_INC_DIR) -I$(CMSIS_DEVICE_DIR) -I$(HAL_INC_DIR)
+#CFLAGS = -mthumb -march=armv7-m -D__STARTUP_CLEAR_BSS -D__START=main -DSTM32F2 -DSTM32F207xx $(OPT) -Wall -ffunction-sections -fdata-sections -fno-builtin
+#CFLAGS += -std=c11
+LDFLAGS = --specs=nosys.specs -Wl,--gc-sections -Wl,-Map=$(BIN_DIR)/$(PROJECT).map -T$(LINKER_DIR)/link.ld
+LDFLAGS += -lnosys -lc
+
+# Flags - Assembler Options
+ifneq (,$(or USE_ST_CMSIS, USE_ST_HAL))
+    CPPFLAGS += -Wa,--defsym,CALL_ARM_SYSTEM_INIT=1
+endif
+DEFINES = -D__STARTUP_CLEAR_BSS -D__START=main
+CPPFLAGS += -I$(INCLUDES) -I$(CMSIS_INC_DIR) -I$(CMSIS_DEVICE_DIR) -I$(HAL_INC_DIR)
+CFLAGS = $(ARCH_FLAGS) $(DEFINES) $(CPU_DEFINES) -Wall -ffunction-sections -fdata-sections -fno-builtin
+
+ifeq ($(DEBUG), 1)
+#CFLAGS += -g3 -gdwarf-2 
+endif
+#LDFLAGS += -specs=nosys.specs
+#LFLAGS = --specs=nosys.specs -Wl,--gc-sections -Wl,-Map=$(BIN_DIR)/$(PROJECT).map -T$(LINKER_DIR)/link.ld
+
+# Targets
+TARGET_ELF = $(BIN_DIR)/sight.elf
+TARGET_BIN = $(BIN_DIR)/sight.bin
+
+# Rules
+all: $(TARGET_BIN)
+
+$(TARGET_BIN): $(TARGET_ELF)
+	$(OBJCOPY) -O binary $< $@
+
+$(TARGET_ELF): $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) -o $@
+
+$(BIN_DIR)/%.o: %.c
+	mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/%.o: %.S
+	mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+# Clean
+.PHONY: clean
+clean:
+	rm -rf $(BIN_DIR)/**/**/*.o $(TARGET_ELF) $(TARGET_BIN)
+
+#Flash
+.PHONY: flash
+flash:
+ifeq ($(FLASHING_TOOL), st-flash)
+	st-flash write $(BIN_DIR)/$(PROJECT).bin $(FLASH)
+else ifeq ($(FLASHING_TOOL), stm32flash)
+	stm32flash -w $(BIN_DIR)/$(PROJECT).bin -v -R $(FLASHING_SERIAL_PORT)
+else
+	$(error $(FLASHING_TOOL) not recognized)
+endif
