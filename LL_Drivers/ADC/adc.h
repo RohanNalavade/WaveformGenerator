@@ -8,9 +8,11 @@
 #include <stdarg.h>
 #include <stdbool.h>
 
+#include "config.h"
 
 typedef enum {
     ADC_DEVICE_1 = 0,
+    ADC_DEVICE_2,
     MAX_ADC_DEVICES
 } adcDeviceIndex_t;
 
@@ -59,6 +61,8 @@ typedef struct {
     uint8_t rank;               // Channel rank in sequence
     uint32_t samplingTime;      // Sampling time for the channel
     void (*callback)(uint16_t); // Callback function for the channel
+    GPIO_TypeDef *gpioPort;     // GPIO Port (GPIOA, GPIOB, etc.)
+    uint8_t gpioPin;            // GPIO Pin number
 } adc_config_t;
 
 /**
@@ -66,7 +70,9 @@ typedef struct {
  */
 typedef struct
 {
-    adc_config_t cfg;        //< ADC driver configuration
+    adc_config_t cfg;               //< ADC driver configuration
+    uint16_t adcRawValue;           // ADCRaw Value
+    bool isAdcConversionCompleted;  //Flag will become 1 when the ADC Conversion is Completed
 } adc_dev_t;
 
 
@@ -76,4 +82,11 @@ extern adc_dev_t adcDevices[MAX_ADC_DEVICES];
 
 /* Function Decleration */
 void adcDevice1_Callback(uint16_t value);
+void adcDevice2_Callback(uint16_t value);
+void adcInitDevices(void);
+void ADC_GPIO_Init(GPIO_TypeDef *GPIOx, uint8_t pin);
+void ADC_IRQHandler(void);
+void ADC_GPIO_Init(GPIO_TypeDef *GPIOx, uint8_t pin);
+uint16_t getADCpinVoltage(adcDeviceIndex_t adcDeviceIndex);
+void startAdcConversion();
 #endif //__ADC_H__

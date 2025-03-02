@@ -33,7 +33,8 @@ SRC_DIRS = startup \
            Application/imuCtrl \
 		   LL_Drivers/TIMERS \
 		   LL_Drivers/UART \
-		   LL_Drivers/DMA
+		   LL_Drivers/DMA \
+		   LL_Drivers/ADC
 
 # CMSIS and HAL Directories (modify these paths as needed)
 CMSIS_INC_DIR = ./Drivers/CMSIS/Include
@@ -55,7 +56,8 @@ INCLUDES = -IApplication/main \
 		   -IApplication/imuCtrl \
 		   -ILL_Drivers/TIMERS \
 		   -ILL_Drivers/UART \
-		   -ILL_Drivers/DMA
+		   -ILL_Drivers/DMA \
+		   -ILL_Drivers/ADC
 
 # Flags - Assembler Options
 ifneq (,$(or USE_ST_CMSIS, USE_ST_HAL))

@@ -45,3 +45,4 @@ bool get_gpio_pin_status(GPIO_TypeDef* gpio_port, int pin)
     
     return pin_status;
 }
+

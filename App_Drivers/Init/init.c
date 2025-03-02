@@ -34,10 +34,11 @@ void initializationSystem()
     (void)configure_timer(SYSTICK_TIMER);
     (void)buttonLedCTRLProcessInit();
 
+    adcInitDevices();
     
     __enable_irq();  // Enable global interrupts
 
-    #ifdef __DEBUG_UART__
-    uart_printf("-------------- Program Started --------------- %d \r\n", 100);
-    #endif //__DEBUG_UART__
+    
+    uart_printf("Program Started%d \r\n", 100);
+    
 }

@@ -34,6 +34,8 @@ void buttonLedCTRLProcess()
 			if(runHiSpeedProcess(&appButtonLedCtrl.process.processTime))
 			{
 				//Do Nothing
+				startAdcConversion();
+				uart_printf("%ld : %d, %d \r\n", appButtonLedCtrl.process.processTime.SystemTick, getADCpinVoltage(0), getADCpinVoltage(1));
 			}
 
 			/* Do Work at 10 Hz*/
@@ -53,7 +55,7 @@ void buttonLedCTRLProcess()
 					reset_gpio(GPIOB, LED_PIN); 
 				}
 
-				uart_printf("%ld \r\n", appButtonLedCtrl.process.processTime.SystemTick);
+				
 			}
 
 			/* Do Work at 1 Hz*/

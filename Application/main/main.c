@@ -9,7 +9,7 @@ int main()
     {
         
         buttonLedCTRLProcess();
-
+        // startAdcConversion();
     }   
     return 0;
 }

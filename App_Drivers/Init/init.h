@@ -11,3 +11,5 @@
 #include "dma_public.h"
 #include "uartLogging_public.h"
 #include "uart_public.h"
+
+#include "adc.h"

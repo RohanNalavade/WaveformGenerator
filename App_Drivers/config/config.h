@@ -3,6 +3,9 @@
 #include "stm32f207xx.h"
 #define CONCAT(a, b) a##b
 
+//CLOCK FREQ
+#define CLK_FREQ_APB1_MHZ       (16)
+
 // Define GPIOB pin mappings for our LED and button.
 #define BUTTON_PIN      (13) //PC13
 #define LED_PIN         (7) //PB7
@@ -20,15 +23,24 @@
 #define PRINTF_BUFFER_SIZE      (512)
 #define UART_BUFFER_SIZE   32
 
-//I2C Defines
-#define __I2C_2__ I2C2
-#define __RCC_APB1ENR_I2C__ CONCAT(RCC_APB1ENR_, CONCAT(__I2C_2__, EN))
-#define I2C2_SCL_PIN    (1)
-#define I2C2_SDA_PIN    (0)       
-#define I2C2_PORT       (GPIOF)
-#define CLK_FREQ_APB1_MHZ   (16)
-#define ICM20948_I2C_ADDR   (0x69)
+//TIMERS
 #define SYSTICK_TIMER       (TIM2)
-//#define __ENABLE_WDT__
-#define __DEBUG_UART__
+
+//-----------ADC Pins----------------//
+
+//ADC Pin for Signal Aquazition PA6->ADC1_IN6
+#define ADC_GPIO_PIN_CW                    (6)
+#define ADC_GPIO_PORT_CW                   (GPIOA)              
+#define ADC_PORT_CW_SIGNAL_AQUAZITION      (ADC1)
+#define ADC_CHANNEL_CW_SIGNAL_AQUAZITION   (6)
+
+//ADC Pin for Changing The Frequency - Potentiometer PA7->ADC2_IN7
+#define ADC_GPIO_PIN_POT                    (7)
+#define ADC_GPIO_PORT_POT                   (GPIOA)  
+#define ADC_PORT_POT_SIGNAL_AQUAZITION      (ADC2)
+#define ADC_CHANNEL_POT_SIGNAL_AQUAZITION   (7)
+
+//-----------------------------------//
+
+
 #endif //__CONFIG_H__

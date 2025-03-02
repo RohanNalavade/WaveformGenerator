@@ -10,6 +10,7 @@
 #include "config.h"
 #include "stateMachineCtrl_public.h"
 
+#include "adc.h"
 #define DEBOUCE_TIME_BUTTON_PRESS_IN_UNITS_100MSEC   (2)    //200 msec
 
 typedef struct{
