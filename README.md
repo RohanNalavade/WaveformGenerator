@@ -4,7 +4,7 @@
 
 - By default on startup Microcontroller generates Sine Wave of 0.78 Hz and when the Button is pressed the frequency of the sine wave is increased by 0.78125 Hz. 
 
-- After 7.8125 Hz when the button is pressed the frquency is rolled over to the starting frequency which is 0.78125 Hz.
+- Once the frequency os the wave is reached to 7.8125 Hz and after that if the button is pressed the frquency is rolled over to the starting frequency which is 0.78125 Hz.
 
 - The ADC data is sampled at 100 Hz and the data is sent over the UART to the Host.
 
