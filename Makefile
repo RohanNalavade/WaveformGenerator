@@ -21,16 +21,12 @@ LD_DIR = linker
 SRC_DIRS = startup \
            Application/main \
            App_Drivers/system \
-           App_Drivers/Clock \
            App_Drivers/GPIO \
            App_Drivers/Init \
            App_Drivers/uartLogging \
-           App_Drivers/Watchdog \
            App_Drivers/config \
            Application/buttonLedCtrl \
            Application/stateMachineCtrl \
-           App_Drivers/i2c \
-           Application/imuCtrl \
 		   LL_Drivers/TIMERS \
 		   LL_Drivers/UART \
 		   LL_Drivers/DMA \
@@ -46,16 +42,12 @@ HAL_INC_DIR = ./Drivers/STM32F2xx_HAL_Driver/Inc
 # Include Directories
 INCLUDES = -IApplication/main \
            -IApp_Drivers/system \
-		   -IApp_Drivers/Clock \
 		   -IApp_Drivers/GPIO \
 		   -IApp_Drivers/Init \
 		   -IApp_Drivers/uartLogging \
-		   -IApp_Drivers/Watchdog \
 		   -IApp_Drivers/config \
 		   -IApplication/buttonLedCtrl \
 		   -IApplication/stateMachineCtrl \
-		   -IApp_Drivers/i2c \
-		   -IApplication/imuCtrl \
 		   -ILL_Drivers/TIMERS \
 		   -ILL_Drivers/UART \
 		   -ILL_Drivers/DMA \
