@@ -4,6 +4,9 @@
 
 - The ADC data is sampled at 100 Hz and the data is sent over the UART to the Host.
 
+# Code Structure
+![Code Structure](docs/images/CodeStructure.png)
+
 # Results
 - Below are the ADC Raw Data graphs.
 
